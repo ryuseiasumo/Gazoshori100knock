@@ -65,6 +65,17 @@ def HOG_step2(img_gray, mag, arg_quantized, N = 8):
 
     return histogram
 
+def HOG_step3(hist, epsilon = 1):
+    cell_N_H, cell_N_W, _ = hist.shape
+    ## each histogram
+    for y in range(cell_N_H):
+        for x in range(cell_N_W):
+            hist[y, x] /= np.sqrt(np.sum(hist[max(y - 1, 0) : min(y + 2, cell_N_H),max(x - 1, 0) : min(x + 2, cell_N_W)] ** 2) + epsilon)
+
+    print(hist)
+    return hist
+
+
 img = cv2.imread("./image_61_70/imori.jpg").astype(np.float32)
 img_gray = BGR2GRAY(img)
 
@@ -72,9 +83,11 @@ img_gray = BGR2GRAY(img)
 magnitude, gradient_quantized = HOG_step1(img_gray)
 
 #4
-histogram = HOG_step2(img_gray,magnitude, gradient_quantized, 8)
+histogram_no_Normalizetion = HOG_step2(img_gray,magnitude, gradient_quantized, 8)
 
-print(histogram)
+#5
+histogram = HOG_step3(histogram_no_Normalizetion)
+
 
 # write histogram to file
 for i in range(9):
@@ -83,5 +96,5 @@ for i in range(9):
     plt.axis('off')
     plt.xticks(color="None")
     plt.yticks(color="None")
-plt.savefig("./image_61_70/answer_67.png")
+plt.savefig("./image_61_70/answer_68.png")
 plt.show()

@@ -41,6 +41,10 @@ img = cv2.imread("./image_61_70/imori.jpg").astype(np.float32)
 img_gray = BGR2GRAY(img)
 
 magnitude, gradient_quantized = HOG(img_gray)
+
+print(magnitude)
+print(gradient_quantized)
+
 # Write gradient magnitude to file
 _magnitude = (magnitude / magnitude.max() * 255).astype(np.uint8)
 cv2.imwrite("./image_61_70/answer_66.jpg", _magnitude)
